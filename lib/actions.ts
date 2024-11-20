@@ -60,6 +60,7 @@ export const signUpCredentials = async (prevState: unknown, formData: FormData) 
 
   
    
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (error) {
     return {
       message: "Failed to register user",
