@@ -1,8 +1,18 @@
 import FormLogin from "@/components/auth/form-login";
 import { GithubButton, GoogleButton } from "@/components/auth/social-button";
 
-const Login = ({searchParams}:{searchParams?:{error?:string}}) => {
+
+interface SearchParams {
+  error?: string;
+}
+
+interface LoginProps {
+  searchParams?: SearchParams;
+}
+
+const Login: React.FC<LoginProps> = ({ searchParams }) => {
   const params = searchParams?.error;
+
     return (
       <div className="p-6 space-y-4">
         <h1 className="text-2xl font-bold text-gray-900">Sign In to your Account</h1>
