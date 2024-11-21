@@ -9,6 +9,15 @@ const FormLogin = () => {
   const [state, formAction] = useActionState(signInCredentials, null);
   return (
     <form action={formAction} className="space-y-6">
+      {state?.message ? (
+          <div
+            className="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-100"
+            role="alert"
+          >
+            <span className="font-medium">{state?.message}</span>
+          </div>
+      ) : null}
+
       {/* Email */}
       <div>
         <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900">
