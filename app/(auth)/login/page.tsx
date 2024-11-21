@@ -1,16 +1,16 @@
 import FormLogin from "@/components/auth/form-login";
 import { GithubButton, GoogleButton } from "@/components/auth/social-button";
 
-
 interface SearchParams {
   error?: string;
 }
 
-interface LoginProps {
+interface PageProps {
   searchParams?: SearchParams;
 }
 
-const Login: React.FC<LoginProps> = ({ searchParams }) => {
+
+const Login: React.FC<PageProps> = ({ searchParams }) => {
   const params = searchParams?.error;
 
     return (
