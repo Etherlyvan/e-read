@@ -1,5 +1,5 @@
 import FormLogin from "@/components/auth/form-login";
-import { GithubButton, GoogleButton } from "@/components/auth/social-button";
+// import { GithubButton, GoogleButton } from "@/components/auth/social-button";
 
 const Login = () => {
   return (
@@ -8,11 +8,11 @@ const Login = () => {
         Sign In to your account
       </h1>
       <FormLogin />
-      <div className="my-4 flex items-center before:flex-1 before:border-t before:border-gray-300 after:flex-1 after:border-t after:border-gray-300">
+      {/* <div className="my-4 flex items-center before:flex-1 before:border-t before:border-gray-300 after:flex-1 after:border-t after:border-gray-300">
         <p className="mx-4 mb-0 text-center font-semibold text-gray-600">Or</p>
-      </div>
-      <GoogleButton />
-      <GithubButton />
+      </div> */}
+      {/* <GoogleButton />
+      <GithubButton /> */}
     </div>
   );
 };

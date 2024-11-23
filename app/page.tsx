@@ -1,8 +1,11 @@
+import { auth } from "@/auth";
+import Hero from "@/components/hero";
 
-export default function Home() {
+const Home = async () => {
+  const session = await auth();
   return (
-    <div className="max-w-screen-xl mx-auto py-6 p-4">
-      <h1 className="text-2xl">Home Page</h1>
-    </div>
+    <Hero userName={session?.user?.name ?? ' '} />
   );
 }
+
+export default Home;
