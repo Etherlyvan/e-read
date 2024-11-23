@@ -23,3 +23,9 @@ declare module "next-auth/jwt"{
     }
 
 }
+// Generated types by Next.JS
+export interface LayoutProps {
+    children?: React.ReactNode
+  
+    params?: Promise<SegmentParams>
+  }

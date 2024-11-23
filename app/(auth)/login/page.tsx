@@ -1,6 +1,18 @@
 import FormLogin from "@/components/auth/form-login";
 import { GithubButton, GoogleButton } from "@/components/auth/social-button";
 
+interface SegmentParams {
+  id: string;
+}
+
+// Generated types by Next.JS
+export interface LayoutProps {
+  children?: React.ReactNode;
+  params?: Promise<SegmentParams>;
+}
+
+
+
 const Login = ({ searchParams }: { searchParams?: { error?: string } }) => {
   const params = searchParams?.error;
 
@@ -14,7 +26,7 @@ const Login = ({ searchParams }: { searchParams?: { error?: string } }) => {
           className="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-100"
           role="alert"
         >
-          <span className="font-medium">Account Alredy Been Usedin another Platform</span>
+          <span className="font-medium">Account Alredy Been Used in another Platform</span>
         </div>
       ) : null}
       <FormLogin />
