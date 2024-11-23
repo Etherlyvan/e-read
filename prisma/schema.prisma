@@ -85,17 +85,14 @@ model Product {
 
 model Book {
   id          String      @id @default(cuid())
+  image       String
+  pdf         String
   title       String
-  author      String
-  publishedAt DateTime
-  isbn        String      @unique
-  genre       String?
+  genre       String
   createdAt   DateTime    @default(now())
-  updatedAt   DateTime    @updatedAt
   favorites   Favorite[]
   @@map("books")
 }
-
 model Favorite {
   id          String      @id @default(cuid())
   userId      String

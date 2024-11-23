@@ -22,7 +22,7 @@ const Sidebar = async () => {
           {session && (
             <>
               <li className="p-2"><Link href="/dashboard">Beranda</Link></li>
-              <li className="p-2"><Link href="/product">Pencarian</Link></li>
+              <li className="p-2"><Link href="/pencarian">Pencarian</Link></li>
               <li className="p-2"><Link href="/product">Rak</Link></li>
               {session.user.role === 'admin' && (
                 <li className="p-2"><Link href="/user">Users</Link></li>

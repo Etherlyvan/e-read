@@ -1,10 +1,16 @@
 import { auth } from "@/auth";
-import Hero from "@/components/hero";
 
 const Pencarian = async () => {
   const session = await auth();
   return (
-    <Hero userName={session?.user?.name ?? 'Pengguna'} />
+    <div className="mt-16">
+          <h2 className="text-4xl font-bold tracking-wide">
+        Selamat Datang <span className="font-bold">{session?.user?.name}</span>
+      </h2>
+      <h2 className="text-4xl font-bold tracking-wide">
+        Di Pencarian Perpustakaan Digital
+      </h2>
+    </div>
   );
 }
 

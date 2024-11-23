@@ -1,9 +1,7 @@
-import type { NextConfig } from "next";
-
-const nextConfig: NextConfig = {
-  /* config options here */
-  images:{
-    remotePatterns:[
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  images: {
+    remotePatterns: [
       {
         protocol: "https",
         hostname: "lh3.googleusercontent.com",
@@ -14,6 +12,13 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-};
+  experimental: {
+    serverActions: {
+      bodySizeLimit: '200mb',
+    },
+  },
+}
 
-export default nextConfig;
+
+console.log('Next.js Config:', nextConfig);
+module.exports = nextConfig;

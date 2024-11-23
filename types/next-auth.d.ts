@@ -29,3 +29,10 @@ export interface LayoutProps {
   
     params?: Promise<SegmentParams>
   }
+
+  
+module.exports = {
+    serverActions: {
+      bodySizeLimit: '50mb', // Atur limit sesuai kebutuhan, misalnya 5 MB
+    },
+  };
