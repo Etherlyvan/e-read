@@ -1,5 +1,6 @@
 import FormLogin from "@/components/auth/form-login";
 import { GithubButton, GoogleButton } from "@/components/auth/social-button";
+import { ReactNode } from "react";
 
 interface SegmentParams {
   id: string;
@@ -11,9 +12,37 @@ export interface LayoutProps {
   params?: Promise<SegmentParams>;
 }
 
+export default async function Layout(props: { children: ReactNode; params: Promise<{ id: string }> }) {
+  const { children, params } = props;
+  const { id } = await params;
 
+  const renderErrorAlert = (error?: string) => {
+    if (error === "OAuthAccountNotLinked") {
+      return (
+        <div
+          className="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-100"
+          role="alert"
+        >
+          <span className="font-medium">Account Already Been Used in another Platform</span>
+        </div>
+      );
+    }
+    return null;
+  };
 
-const Login = ({ searchParams }: { searchParams?: { error?: string } }) => {
+  return (
+    <div>
+      {children}
+      {renderErrorAlert(id)}
+    </div>
+  );
+}
+
+interface LoginProps {
+  searchParams?: { error?: string };
+}
+
+const Login = ({ searchParams }: LoginProps) => {
   const params = searchParams?.error;
 
   return (
@@ -26,7 +55,7 @@ const Login = ({ searchParams }: { searchParams?: { error?: string } }) => {
           className="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-100"
           role="alert"
         >
-          <span className="font-medium">Account Alredy Been Used in another Platform</span>
+          <span className="font-medium">Account Already Been Used in another Platform</span>
         </div>
       ) : null}
       <FormLogin />
@@ -39,4 +68,4 @@ const Login = ({ searchParams }: { searchParams?: { error?: string } }) => {
   );
 };
 
-export default Login;
+export { Login };
