@@ -17,7 +17,7 @@ const Dashboard = async () => {
         <div className="flex items-end justify-between">
           <h1 className="text-4xl font-bold">Latest Book</h1>
           <Link href="/create" className="py-3 px-6 bg-blue-600 hover:bg-blue-700 text-white">
-            New Image
+            New Book
           </Link>
         </div>
         <div className="grid md:grid-cols-3 gap-5 mt-10">
