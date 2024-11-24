@@ -1,6 +1,7 @@
 import EditForm from "@/components/edit-form";
 import { getBookById } from "@/lib/data";
 import { notFound } from "next/navigation";
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 type Paramst = Promise<{ slug: string[] }>
 
 
