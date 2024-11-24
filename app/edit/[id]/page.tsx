@@ -1,9 +1,11 @@
 import EditForm from "@/components/edit-form";
 import { getBookById } from "@/lib/data";
 import { notFound } from "next/navigation";
+type Params = Promise<{ slug: string[] }>
 
-const EditPage = async ({ params }: { params: { id: string } }) => {
-  const data = await getBookById(params.id);
+
+const EditPage = async ({ Params }: { Params: { id: string } }) => {
+  const data = await getBookById(Params.id);
   if (!data) return notFound();
 
   return (
