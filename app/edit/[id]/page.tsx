@@ -1,12 +1,12 @@
 import EditForm from "@/components/edit-form";
 import { getBookById } from "@/lib/data";
 import { notFound } from "next/navigation";
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-type Paramst = { id: string }
 
+type Dat = Promise<{ id: string }>;
 
-const EditPage = async ({ params }: { params: Paramst }) => {
-  const data = await getBookById(params.id );
+const EditPage = async ({ params }: { params: Dat }) => {
+  const { id } = await params;
+  const data = await getBookById(id);
   if (!data) return notFound();
 
   return (
