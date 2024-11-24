@@ -2,6 +2,17 @@ import { prisma } from "@/lib/prisma";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 
+export const getBooks = async () => {
+  try {
+    const result = await prisma.book.findMany({
+      orderBy: { createdAt: "desc" },
+    });
+    return result;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  } catch (error) {
+    throw new Error("Failed to fetch data");
+  }
+};
 
 export const getUsers = async () => {
     const session = await auth();
@@ -47,5 +58,17 @@ export const getProductByUser = async () => {
           }
     }
 
+  };
+  
+  export const getBookById = async (id: string) => {
+    try {
+      const result = await prisma.book.findUnique({
+        where: { id },
+      });
+      return result;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (error) {
+      throw new Error("Failed to fetch data");
+    }
   };
   

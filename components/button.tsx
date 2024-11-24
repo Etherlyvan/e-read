@@ -2,6 +2,8 @@
 
 import { useFormStatus } from "react-dom";
 import { clsx } from "clsx";
+import Link from "next/link";
+import { deleteBook } from "@/lib/actions";
 
 export const LoginButton = () => {
     const { pending } = useFormStatus();
@@ -50,5 +52,45 @@ export const SubmitButton = ({label}:{label:string}) => {
       )}
       
     </button>
+  );
+};
+
+export const EditButton = ({ id }: { id: string }) => {
+  return (
+    <Link
+      href={`edit/${id}`}
+      className="py-3 text-sm bg-gray-50 rounded-bl-md w-full hover:bg-gray-100 text-center"
+    >
+      Edit
+    </Link>
+  );
+};
+
+
+const DeleteBtn = () => {
+  const { pending } = useFormStatus();
+  return (
+    <button type="submit" disabled={pending}>
+      {pending ? "Deleting..." : "Delete"}
+    </button>
+  );
+};
+
+export const DeleteButton = ({ id }: { id: string }) => {
+  const deleteBookWithId = async (formData: FormData) => {
+    await deleteBook(id);
+  };
+
+  return (
+    <form 
+      onSubmit={async (e) => {
+        e.preventDefault();
+        const formData = new FormData(e.currentTarget);
+        await deleteBookWithId(formData);
+      }} 
+      className="py-3 text-sm bg-gray-50 rounded-bl-md w-full hover:bg-gray-100 text-center"
+    >
+      <DeleteBtn />
+    </form>
   );
 };

@@ -7,8 +7,9 @@ import { redirect } from "next/navigation"; // Mengimpor fungsi redirect dari Ne
 import { signIn } from "@/auth";
 import { AuthError } from "next-auth";
 import { z } from "zod";
-import {put} from "@vercel/blob";
+import {put, del} from "@vercel/blob";
 import { revalidatePath } from "next/cache";
+import { getBookById } from "@/lib/data";
 
 
 
@@ -99,7 +100,7 @@ const UploadSchema = z.object({
 });
 
 
-export const uploadImage = async (prevState: unknown, formData: FormData) => {
+export const uploadBook= async (prevState: unknown, formData: FormData) => {
   const validatedFields = UploadSchema.safeParse(
     Object.fromEntries(formData.entries())
   );
@@ -139,3 +140,113 @@ export const uploadImage = async (prevState: unknown, formData: FormData) => {
   revalidatePath("/dashboard");
   redirect("/dashboard");
 };
+
+
+const EditSchema = z.object({
+  title: z.string().min(1),
+  genre: z.string().min(1),
+  image: z
+    .instanceof(File)
+    .refine((file) => file.size===0 || file.type.startsWith("image/"), {
+      message: "Only images are allowed",
+    })
+    .refine((file) => file.size < 40000000, {
+      message: "Image must be less than 40MB",
+    })
+    .optional(),
+  PDF: z
+    .instanceof(File)
+    .refine((file) => file.size===0 || file.type === "application/pdf", {
+      message: "Only PDFs are allowed",
+    })
+    .refine((file) => file.size < 40000000, {
+      message: "PDF must be less than 40MB",
+    })
+    .optional(),
+});
+
+
+export const updateBook= async (id: string,prevState: unknown, formData: FormData) => {
+  const validatedFields = EditSchema.safeParse(
+    Object.fromEntries(formData.entries())
+  );
+
+  if (!validatedFields.success) {
+    return {
+      error: validatedFields.error.flatten().fieldErrors,
+    };
+  }
+  const data = await getBookById(id);
+  if (!data) return { message: "No Data Found" };
+
+  const { title, genre, image,PDF } = validatedFields.data;
+  let imagePath;
+  if (!image || image.size <= 0) {
+    imagePath = data.image;
+  } else {
+    await del(data.image);
+    // Pastikan fungsi `put` mengembalikan objek dengan properti `url`
+    const { url: urlImage } = await put(image.name, image, {
+      access: "public",
+      multipart: true,
+    });
+    imagePath = urlImage;
+  }
+  let PDFPath;
+  if (!PDF || PDF.size <= 0) {
+    PDFPath = data.pdf;
+  } else {
+    await del(data.pdf);
+    const { url: urlPDF } = await put(PDF.name, PDF, {
+      access: "public",
+      multipart: true,
+    });
+  
+    PDFPath = urlPDF;
+  }
+
+
+  try {
+    await prisma.book.update({
+      data: {
+        title,
+        image: imagePath,
+        genre,
+        pdf: PDFPath,
+      },
+      where: { id },
+    });
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  } catch (error) {
+    return { message: "Failed to update data" };
+  }
+  
+  revalidatePath("/dashboard");
+  redirect("/dashboard");
+};
+
+
+export const deleteBook = async (id: string) => {
+  const data = await getBookById(id);
+  if (!data) return { message: "No data found" };
+
+  // Menghapus gambar
+  await del(data.image);
+
+  // Menghapus PDF
+  if (data.pdf) {
+    await del(data.pdf);
+  }
+
+  try {
+    await prisma.book.delete({
+      where: { id },
+    });
+  } catch (error) {
+    return { message: "Failed to delete data" };
+  }
+  
+  revalidatePath("/");
+  return { message: "Book deleted successfully" };
+};
+

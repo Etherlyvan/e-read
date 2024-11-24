@@ -1,10 +1,11 @@
 "use client";
-import { uploadBook} from '@/lib/actions';
+import { updateBook} from '@/lib/actions';
 import { useActionState } from 'react';
 import { SubmitButton } from '@/components/button';
+import { Book } from '@prisma/client';
 
-const CreateForm = () => { 
-    const [state, formAction] = useActionState(uploadBook, null);
+const EditForm = ({data}:{data:Book}) => { 
+    const [state, formAction] = useActionState(updateBook.bind(null,data.id), null);
   return (
     <form action={formAction}>
         
@@ -15,6 +16,7 @@ const CreateForm = () => {
           name="title"
           className="py-2 px-4 rounded-sm border border-gray-400 w-full"
           placeholder="Title..."
+          defaultValue={data.title}
         />
             <div aria-live="polite" aria-atomic="true">
                 <p className="text-sm text-red-500 mt-2">{state?.error?.title}</p>
@@ -28,6 +30,7 @@ const CreateForm = () => {
           name="genre"
           className="py-2 px-4 rounded-sm border border-gray-400 w-full"
           placeholder="Genre..."
+          defaultValue={data.genre}
         />
         <div aria-live="polite" aria-atomic="true">
             <p className="text-sm text-red-500 mt-2">{state?.error?.genre}</p>
@@ -59,9 +62,9 @@ const CreateForm = () => {
       </div>
 
       {/* Button Upload */}
-      <SubmitButton label = "upload"/>
+      <SubmitButton label = "update"/>
     </form>
   );
 };
 
-export default CreateForm;
+export default EditForm;
