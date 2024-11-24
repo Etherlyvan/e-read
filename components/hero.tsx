@@ -1,4 +1,5 @@
 // components/Hero.tsx
+import Image from 'next/image';
 import React from 'react';
 
 const hero = ({ userName }: { userName: string }) => {
@@ -32,7 +33,7 @@ const hero = ({ userName }: { userName: string }) => {
       
       {/* Bagian kanan: Gambar besar */}
       <div className="flex-1 flex justify-center items-center">
-        <img src="/hero_image.svg" alt="Gambar Perpustakaan" className="max-w-full h-auto" />
+        <Image src="/hero_image.svg" alt="Gambar Perpustakaan" className="max-w-full h-auto" />
       </div>
     </div>
   );
