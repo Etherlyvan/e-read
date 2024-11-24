@@ -12,7 +12,7 @@ import { revalidatePath } from "next/cache";
 import { getBookById } from "@/lib/data";
 
 
-
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const signInCredentials = async (prevState: unknown, formData: FormData) => {
   const validatedFields = SignInSchema.safeParse(Object.fromEntries(formData.entries()));
 
@@ -46,6 +46,7 @@ export const signUpCredentials = async (prevState: unknown, formData: FormData) 
 
   if (!validatedFields.success) {
     return {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       error: validatedFields.error.flatten().fieldErrors,
     };
   }
@@ -242,6 +243,7 @@ export const deleteBook = async (id: string) => {
     await prisma.book.delete({
       where: { id },
     });
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (error) {
     return { message: "Failed to delete data" };
   }

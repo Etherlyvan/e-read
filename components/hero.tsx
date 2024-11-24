@@ -32,9 +32,18 @@ const hero = ({ userName }: { userName: string }) => {
       </div>
       
       {/* Bagian kanan: Gambar besar */}
-      <div className="flex-1 flex justify-center items-center">
-        <Image src="/hero_image.svg" alt="Gambar Perpustakaan" className="max-w-full h-auto" />
-      </div>
+
+
+        <div className="flex-1 flex justify-center items-center">
+        <Image
+            src="/hero_image.svg"
+            alt="Gambar Perpustakaan"
+            width={500} // Ganti dengan lebar yang sesuai
+            height={300} // Ganti dengan tinggi yang sesuai
+            className="max-w-full h-auto"
+        />
+        </div>
+
     </div>
   );
 };

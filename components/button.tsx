@@ -77,6 +77,7 @@ const DeleteBtn = () => {
 };
 
 export const DeleteButton = ({ id }: { id: string }) => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const deleteBookWithId = async (formData: FormData) => {
     await deleteBook(id);
   };
