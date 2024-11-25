@@ -1,4 +1,3 @@
-// components/Hero.tsx
 import Image from 'next/image';
 import React from 'react';
 
@@ -10,7 +9,10 @@ const hero = ({ userName }: { userName: string }) => {
         {/* Kata kata sambutan */}
         <div className="mt-16">
           <h2 className="text-6xl font-bold">
-            Selamat Datang <span className="font-bold">{userName}</span>
+            Selamat Datang 
+          </h2>
+          <h2 className="text-6xl font-bold">
+            {userName}
           </h2>
           <h2 className="text-6xl font-bold mt-8 mb-8">
             Di Perpustakaan Digital
@@ -19,10 +21,10 @@ const hero = ({ userName }: { userName: string }) => {
         
         {/* Kata Kata Lanjutan */}
         <div className="mt-8">
-          <h2 className="text-2xl tracking-wide leading-relaxed">
+          <h2 className="text-2xl tracking-wide leading-relaxed mb-4">
             Jelajahi koleksi buku, jurnal, dan literatur dari seluruh dunia.
           </h2>
-          <h2 className="text-2xl tracking-wide leading-relaxed">
+          <h2 className="text-2xl tracking-wide leading-relaxed mb-4">
             Akses mudah kapan saja, di mana saja.
           </h2>
           <h2 className="text-2xl tracking-wide leading-relaxed">
@@ -32,9 +34,7 @@ const hero = ({ userName }: { userName: string }) => {
       </div>
       
       {/* Bagian kanan: Gambar besar */}
-
-
-        <div className="flex-1 flex justify-center items-center">
+      <div className="flex-1 flex justify-center items-center">
         <Image
             src="/hero_image.svg"
             alt="Gambar Perpustakaan"
@@ -42,7 +42,7 @@ const hero = ({ userName }: { userName: string }) => {
             height={300} // Ganti dengan tinggi yang sesuai
             className="max-w-full h-auto"
         />
-        </div>
+      </div>
 
     </div>
   );

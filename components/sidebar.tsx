@@ -7,7 +7,7 @@ const Sidebar = async () => {
 
   return (
     <aside className="w-64 h-screen bg-white border-r border-gray-200">
-      <div className="p-4 flex flex-col items-center">
+      <div className="py-10 p-4 flex flex-col items-center">
         <Link href="/">
           <Image
             className="h-32 mb-4"
@@ -18,7 +18,9 @@ const Sidebar = async () => {
           />
         </Link>
         <ul className="space-y-4 font-semibold text-gray-600">
-          <li className="p-2"><Link href="/">Home</Link></li>
+        {!session && (
+            <li className="p-2"><Link href="/">Home</Link></li>
+          )}
           {session && (
             <>
               <li className="p-2"><Link href="/dashboard">Beranda</Link></li>

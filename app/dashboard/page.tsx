@@ -20,7 +20,7 @@ const Dashboard = async () => {
             New Book
           </Link>
         </div>
-        <div className="grid md:grid-cols-3 gap-5 mt-10">
+        <div className="grid md:grid-cols-4 gap-5 mt-10">
           {/* Content goes here */}
           {books.map((book) => (
             
