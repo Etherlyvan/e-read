@@ -2,8 +2,11 @@ import Image from "next/image";
 import Link from 'next/link';
 import { DeleteButton, EditButton } from "./button";
 import type { Book } from "@prisma/client";
+import { auth } from "@/auth";
 
-const Card = ({ data }: { data: Book }) => {
+
+const Card = async ({ data }: { data: Book }) => {
+  const session = await auth();
   return (
     <Link href={`/books/${data.id}`} legacyBehavior>
       <div className="max-w-sm border border-gray-200 rounded-md shadow cursor-pointer block transition-transform duration-300 hover:scale-105">
@@ -20,10 +23,13 @@ const Card = ({ data }: { data: Book }) => {
         <div className="p-5">
           <h1 className="text-2xl font-bold text-gray-900 truncate">{data.title}</h1>
         </div>
-        <div className="flex items-center justify-between p-5">
-          <EditButton id={data.id}/>
-          <DeleteButton id={data.id}/>
-        </div>
+        {session && session.user.role === 'admin' && (
+            <div className="flex items-center justify-between p-5">
+              <EditButton id={data.id}/>
+              <DeleteButton id={data.id}/>
+            </div>
+        )}
+        
       </div>
     </Link>
   );
