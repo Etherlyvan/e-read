@@ -5,7 +5,9 @@ import { auth } from "@/auth";
 const Sidebar = async () => {
   const session = await auth();
 
+  if (!session) return null; // Do not render the sidebar if there is no session
   return (
+    
     <aside className="w-64 h-screen bg-white border-r border-gray-200">
       <div className="py-10 p-4 flex flex-col items-center">
         <Link href="/">

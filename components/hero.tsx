@@ -8,14 +8,8 @@ const hero = ({ userName }: { userName: string }) => {
       <div className="flex-1">
         {/* Kata kata sambutan */}
         <div className="mt-16">
-          <h2 className="text-6xl font-bold">
-            Selamat Datang 
-          </h2>
-          <h2 className="text-6xl font-bold">
-            {userName}
-          </h2>
-          <h2 className="text-6xl font-bold mt-8 mb-8">
-            Di Perpustakaan Digital
+          <h2 className="text-6xl font-bold mt-8 mb-8 leading-tight">
+          Selamat Datang {userName} <br /> Di Perpustakaan Digital
           </h2>
         </div>
         

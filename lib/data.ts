@@ -72,3 +72,14 @@ export const getProductByUser = async () => {
     }
   };
   
+
+
+
+
+export const getFavoriteBooks = async (userId: string) => {
+  const favoriteBooks = await prisma.favorite.findMany({
+    where: { userId },
+    include: { book: true },
+  });
+  return favoriteBooks.map(fav => fav.book);
+};

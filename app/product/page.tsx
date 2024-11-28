@@ -1,20 +1,26 @@
-import ProductTable from "@/components/product-table";
-import type { Metadata } from "next";
+import { auth } from "@/auth";
+import Card from "@/components/card";
+import { getFavoriteBooks } from '@/lib/data';
 
-export const metadata: Metadata = {
-  title: "Products",
-};
 
-const ProductPage = () => {
+const Dashboard = async () => {
+  const session = await auth();
+  const books = await getFavoriteBooks(session?.user.id??"");
+
   return (
-    <div className="bg-slate-50 min-h-screen">
-      <div className="max-w-screen-md mx-auto py-10">
-        <h1 className="text-2xl">Rak</h1>
-        <h1 className="text-2xl font-bold">Product List</h1>
-        <ProductTable/>
+    <div>
+      <div className="max-w-screen-lg mx-auto py-14">
+        <div className="flex items-end justify-between">
+          <h1 className="text-4xl font-bold">Favorite Books</h1>
+        </div>
+        <div className="grid md:grid-cols-4 gap-5 mt-10">
+          {books.map((book) => (
+            <Card key={book.id} data={book} />
+          ))}
+        </div>
       </div>
     </div>
   );
 };
 
-export default ProductPage;
+export default Dashboard;

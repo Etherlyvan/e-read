@@ -11,7 +11,6 @@ import {put, del} from "@vercel/blob";
 import { revalidatePath } from "next/cache";
 import { getBookById } from "@/lib/data";
 
-
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const signInCredentials = async (prevState: unknown, formData: FormData) => {
   const validatedFields = SignInSchema.safeParse(Object.fromEntries(formData.entries()));
@@ -252,3 +251,163 @@ export const deleteBook = async (id: string) => {
   return { message: "Book deleted successfully" };
 };
 
+// action.ts
+
+
+// export async function addFavoriteServerSide(bookId: string, userId: string) {
+//   try {
+//     // Cek apakah buku sudah ada di daftar favorit
+//     const existingFavorite = await prisma.favorite.findUnique({
+//       where: {
+//         userId_bookId: {
+//           userId,
+//           bookId,
+//         },
+//       },
+//     });
+
+//     if (existingFavorite) {
+//       // Buku sudah ada di daftar favorit
+//       return { message: "Book is already in favorites" };
+//     }
+
+//     // Tambahkan buku ke daftar favorit
+//     const favorite = await prisma.favorite.create({
+//       data: {
+//         userId,
+//         bookId,
+//       },
+//     });
+
+//     return favorite;
+//   // eslint-disable-next-line @typescript-eslint/no-unused-vars
+//   } catch (error) {
+//     return { message: "Failed to add book to favorites" };
+//   }
+// }
+
+
+
+// type AddFavoriteResult = 
+//   | { id: string; createdAt: Date; bookId: string; userId: string; }
+//   | { message: string };
+
+// export async function addFavorite(bookId: string, userId: string): Promise<AddFavoriteResult> {
+//   try {
+//     // Cek apakah buku sudah ada di daftar favorit
+//     const existingFavorite = await prisma.favorite.findUnique({
+//       where: {
+//         userId_bookId: {
+//           userId,
+//           bookId,
+//         },
+//       },
+//     });
+
+//     if (existingFavorite) {
+//       // Buku sudah ada di daftar favorit
+//       return { message: "Book is already in favorites" };
+//     }
+
+//     // Tambahkan buku ke daftar favorit
+//     const favorite = await prisma.favorite.create({
+//       data: {
+//         userId,
+//         bookId,
+//       },
+//     });
+
+//     return favorite;
+//   // eslint-disable-next-line @typescript-eslint/no-unused-vars
+//   } catch (error) {
+//     return { message: "Failed to add book to favorites" };
+//   }
+// }
+
+
+// type DeleteFavoriteResult = 
+//   | { message: string };
+
+// export async function deleteFavorite(bookId: string, userId: string): Promise<DeleteFavoriteResult> {
+//   try {
+//     // Cek apakah buku ada di daftar favorit
+//     const existingFavorite = await prisma.favorite.findUnique({
+//       where: {
+//         userId_bookId: {
+//           userId,
+//           bookId,
+//         },
+//       },
+//     });
+
+//     if (!existingFavorite) {
+//       // Buku tidak ada di daftar favorit
+//       return { message: "Book is not in favorites" };
+//     }
+
+//     // Hapus buku dari daftar favorit
+//     await prisma.favorite.delete({
+//       where: {
+//         userId_bookId: {
+//           userId,
+//           bookId,
+//         },
+//       },
+//     });
+
+//     return { message: "Book removed from favorites" };
+//   // eslint-disable-next-line @typescript-eslint/no-unused-vars
+//   } catch (error) {
+//     return { message: "Failed to remove book from favorites" };
+//   }
+// }
+export async function toggleFavorite(userId: string, bookId: string) {
+  try {
+    const existingFavorite = await prisma.favorite.findUnique({
+      where: {
+        userId_bookId: {
+          userId,
+          bookId,
+        },
+      },
+    });
+
+    if (existingFavorite) {
+      await prisma.favorite.delete({
+        where: {
+          id: existingFavorite.id,
+        },
+      });
+      return { message: 'Favorite removed', isFavorite: false };
+    } else {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const newFavorite = await prisma.favorite.create({
+        data: {
+          userId,
+          bookId,
+        },
+      });
+      return { message: 'Favorite added', isFavorite: true };
+    }
+  } catch (error) {
+    console.error('Error toggling favorite:', error);
+    throw new Error('Failed to toggle favorite');
+  }
+}
+
+export async function checkFavoriteStatus(userId: string, bookId: string) {
+  try {
+    const existingFavorite = await prisma.favorite.findUnique({
+      where: {
+        userId_bookId: {
+          userId,
+          bookId,
+        },
+      },
+    });
+    return !!existingFavorite;
+  } catch (error) {
+    console.error('Error checking favorite status:', error);
+    throw new Error('Failed to check favorite status');
+  }
+}
