@@ -1,9 +1,21 @@
-import React from 'react'
+import PdfViewer from '@/components/PdfViewer';
+import React from 'react';
+import { getBookById } from '@/lib/data';
+import { notFound } from 'next/navigation';
 
-const Book = () => {
+type Dat = Promise<{ id: string }>;
+
+const Book = async ({ params }: { params: Dat }) => {
+  const { id } = await params;
+  const data = await getBookById(id);
+  if (!data) return notFound();
+  const fileUrl = data.pdf ?? "";
   return (
-    <div>Book</div>
-  )
+    <div>
+      <h1>PDF Viewer</h1>
+      <PdfViewer fileUrl={fileUrl} />
+    </div>
+  );
 }
 
-export default Book
+export default Book;
