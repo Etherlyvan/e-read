@@ -2,13 +2,12 @@ import { auth } from "@/auth";
 import { getBooks } from "@/lib/data";
 import Card from "@/components/card";
 
-type SearchParamsPromise = Promise<{ search?: string }>;
+type SearchParams = { search?: string };
 
-const Pencarian = async ({ searchParams }: { searchParams: SearchParamsPromise }) => {
+const Pencarian = async ({ searchParams }: { searchParams: SearchParams }) => {
   const session = await auth();
   const books = await getBooks();
-  const { search = '' } = await searchParams;
-  const searchTerm = search.toLowerCase();
+  const searchTerm = searchParams?.search?.toLowerCase() ?? '';
   const filteredBooks = books.filter(book => book.title.toLowerCase().includes(searchTerm));
 
   return (
