@@ -251,11 +251,11 @@ export const deleteBook = async (id: string) => {
     });
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (error) {
-    return { message: "Failed to delete data" };
+    return { message: "Failed" };
   }
 
   revalidatePath("/");
-  return { message: "Book deleted successfully" };
+  return { message: "success" };
 };
 
 
