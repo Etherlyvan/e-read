@@ -1,37 +1,21 @@
-"use client";
+// /components/SearchBooks.tsx
 
-import { useState } from 'react';
-import Card from '@/components/card';
-import type { Book } from '@prisma/client';
+import Card from "@/components/card";
+import { getBooks } from "@/lib/data";
 
-const SearchBooks = ({ books }: { books: Book[] }) => {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [filteredBooks, setFilteredBooks] = useState(books);
+interface SearchBooksProps {
+  searchTerm: string;
+}
 
-  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value.toLowerCase();
-    setSearchTerm(value);
-    setFilteredBooks(
-      books.filter(book => book.title.toLowerCase().includes(value))
-    );
-  };
+const SearchBooks = async ({ searchTerm }: SearchBooksProps) => {
+  const books = await getBooks();
+  const filteredBooks = books.filter(book => book.title.toLowerCase().includes(searchTerm.toLowerCase()));
 
   return (
-    <div>
-      <div className="mt-5 mb-10">
-        <input
-          type="text"
-          placeholder="Cari buku..."
-          value={searchTerm}
-          onChange={handleSearch}
-          className="w-full p-2 border border-gray-300 rounded-md"
-        />
-      </div>
-      <div className="grid md:grid-cols-4 gap-5 mt-10">
-        {filteredBooks.map((book) => (
-          <Card key={book.id} data={book} />
-        ))}
-      </div>
+    <div className="grid md:grid-cols-4 gap-5 mt-10">
+      {filteredBooks.map((book) => (
+        <Card key={book.id} data={book} />
+      ))}
     </div>
   );
 };

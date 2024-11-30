@@ -1,13 +1,16 @@
+// /pages/pencarian/page.tsx
+
 import { auth } from "@/auth";
 import { getBooks } from "@/lib/data";
 import Card from "@/components/card";
 
-type SearchParams = { search?: string };
+type SearchParamsPromise = Promise<{ search?: string }>;
 
-const Pencarian = async ({ searchParams }: { searchParams: SearchParams }) => {
+const Pencarian = async ({ searchParams }: { searchParams: SearchParamsPromise }) => {
   const session = await auth();
   const books = await getBooks();
-  const searchTerm = searchParams?.search?.toLowerCase() ?? '';
+  const { search = '' } = await searchParams;
+  const searchTerm = search.toLowerCase();
   const filteredBooks = books.filter(book => book.title.toLowerCase().includes(searchTerm));
 
   return (
