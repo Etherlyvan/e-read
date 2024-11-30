@@ -5,7 +5,7 @@ import { clsx } from "clsx";
 import Link from "next/link";
 import { checkFavoriteStatus, deleteBook, toggleFavorite } from "@/lib/actions";
 import React, { useEffect, useState, useRef } from 'react';
-import Modal from "@/components/modal";
+
 import styles from './FavoriteButton.module.css'; // Impor CSS Module
 import { PlusIcon, CheckIcon, TrashIcon } from '@heroicons/react/24/outline';
 
@@ -104,6 +104,7 @@ export const DeleteButton = ({ id }: DeleteButtonProps) => {
     try {
       const result = await deleteBook(id);
       setMessage(result.message);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       setMessage('Failed to delete book');
     } finally {

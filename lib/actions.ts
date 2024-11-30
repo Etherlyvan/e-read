@@ -249,6 +249,7 @@ export const deleteBook = async (id: string) => {
     await prisma.book.delete({
       where: { id },
     });
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (error) {
     return { message: "Failed to delete data" };
   }
