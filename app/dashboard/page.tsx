@@ -8,7 +8,7 @@ const Dashboard = async () => {
   const session = await auth();
   const books = await getBooks();
   return (
-    <div>
+    <div className="bg-white p-6">
 
       <Hero userName='' />
       
@@ -23,7 +23,7 @@ const Dashboard = async () => {
           )}
           
         </div>
-        <div className="grid md:grid-cols-4 gap-5 mt-10">
+        <div className="grid md:grid-cols-5 gap-5 mt-10">
           {/* Content goes here */}
           {books.map((book) => (
             

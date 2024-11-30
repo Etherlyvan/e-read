@@ -1,14 +1,17 @@
 import Image from "next/image";
 import Link from 'next/link';
-import { DeleteButton, EditButton, FavoriteButton} from "@/components/button";
+import { DeleteButton, EditButton, FavoriteButton } from "@/components/button";
 import type { Book } from "@prisma/client";
 import { auth } from "@/auth";
+
+// Dynamically import the client component
+import CardClient from "@/components/CardClient";
 
 const Card = async ({ data }: { data: Book }) => {
   const session = await auth();
   return (
-    <div className="max-w-sm border border-gray-200 rounded-md shadow cursor-pointer block transition-transform duration-300 hover:scale-105">
-      <Link href={`/books/${data.id}`} legacyBehavior>
+    <div className="max-w-xs border border-gray-200 rounded-md shadow cursor-pointer block transition-transform duration-300 hover:scale-105">
+      <Link href={`/books/${data.id}`}>
         <div className="relative aspect-[3/4]">
           <Image
             src={data.image}
@@ -20,23 +23,18 @@ const Card = async ({ data }: { data: Book }) => {
           />
         </div>
       </Link>
-      <div className="p-5">
-        <h1 className="text-2xl font-bold text-gray-900 truncate">{data.title}</h1>
-      </div>
+      <CardClient title={data.title} genre={data.genre} />
+      <div className="flex items-center justify-between p-3">
+        <FavoriteButton bookId={data.id} userId={session?.user?.id ?? ""} />
       {session && session.user.role === 'admin' && (
-        <>  
-        <div className="flex items-center justify-between p-5">
+        <div className="flex items-center space-x-2">
           <EditButton id={data.id} />
           <DeleteButton id={data.id} />
         </div>
-        <div className="flex items-center justify-between p-5">
-          <FavoriteButton bookId={data.id} userId = {session.user.id??""}/>
-        </div>
-        </>
       )}
+      </div>
     </div>
   );
 };
 
 export default Card;
-

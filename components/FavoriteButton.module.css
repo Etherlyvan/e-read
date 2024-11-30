@@ -1,0 +1,30 @@
+/* FavoriteButton.module.css */
+.button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem; /* Lebar tombol */
+  height: 2.5rem; /* Tinggi tombol */
+  border: none;
+  border-radius: 50%; /* Membuat tombol menjadi bulat */
+  background-color: #eff4f0;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.button:hover {
+  background-color: #48a65b;
+}
+
+.icon {
+  width: 1.5rem; /* Ukuran ikon */
+  height: 1.5rem; /* Ukuran ikon */
+}
+
+.greenIcon {
+  color: #05442f; /* Warna hijau untuk ikon centang */
+}
+
+.blueIcon {
+  color: #3b82f6; /* Warna biru untuk ikon plus */
+}

@@ -10,7 +10,7 @@ interface PdfViewerProps {
 
 const PdfViewer: React.FC<PdfViewerProps> = ({ fileUrl }) => {
     return (
-        <div style={{ height: '750px', border: '1px solid rgba(0, 0, 0, 0.3)' }}>
+        <div style={{ height: '750px', border: '0px solid rgba(0, 0, 0, 0.3)' }}>
             <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.min.js">
                 <Viewer fileUrl={fileUrl} />
             </Worker>

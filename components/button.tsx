@@ -4,8 +4,10 @@ import { useFormStatus } from "react-dom";
 import { clsx } from "clsx";
 import Link from "next/link";
 import { checkFavoriteStatus, deleteBook, toggleFavorite } from "@/lib/actions";
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import Modal from "@/components/modal";
+import styles from './FavoriteButton.module.css'; // Impor CSS Module
+import { PlusIcon, CheckIcon, TrashIcon } from '@heroicons/react/24/outline';
 
 
 
@@ -63,9 +65,11 @@ export const EditButton = ({ id }: { id: string }) => {
   return (
     <Link
       href={`edit/${id}`}
-      className="py-3 text-sm bg-gray-50 rounded-bl-md w-full hover:bg-gray-100 text-center"
+      className="flex items-center justify-center w-10 h-10 bg-blue-50 rounded-full hover:bg-blue-500"
     >
-      Edit
+      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-700" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+        <path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828zM4 12v4h4l10-10-4-4L4 12z" />
+      </svg>
     </Link>
   );
 };
@@ -73,171 +77,58 @@ export const EditButton = ({ id }: { id: string }) => {
 const DeleteBtn = () => {
   const { pending } = useFormStatus();
   return (
-    <button type="submit" disabled={pending}>
-      {pending ? "Deleting..." : "Delete"}
+    <button 
+      type="submit" 
+      disabled={pending} 
+      className="flex items-center justify-center w-10 h-10 bg-red-500 text-white rounded-full hover:bg-red-600"
+    >
+      {pending ? (
+        <span>Deleting...</span>
+      ) : (
+        <TrashIcon className="h-5 w-5" aria-hidden="true" />
+      )}
     </button>
   );
 };
 
+interface DeleteButtonProps {
+  id: string;
+}
 
-export const DeleteButton = ({ id }: { id: string }) => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const deleteBookWithId = async (formData: FormData) => {
-    await deleteBook(id);
+export const DeleteButton = ({ id }: DeleteButtonProps) => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [message, setMessage] = useState('');
+
+  const deleteBookWithId = async () => {
+    setIsLoading(true);
+    try {
+      const result = await deleteBook(id);
+      setMessage(result.message);
+    } catch (error) {
+      setMessage('Failed to delete book');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
     <form 
       onSubmit={async (e) => {
         e.preventDefault();
-        const formData = new FormData(e.currentTarget);
-        await deleteBookWithId(formData);
+        await deleteBookWithId();
       }} 
-      className="py-3 text-sm bg-gray-50 rounded-bl-md w-full hover:bg-gray-100 text-center"
+      className="py-3 text-sm w-full-center"
     >
       <DeleteBtn />
+      {isLoading && <p>Deleting...</p>}
+      {message && <p>{message}</p>}
     </form>
   );
 };
 
-
-// type AddFavoriteResult = 
-//   | { id: string; createdAt: Date; bookId: string; userId: string; }
-//   | { message: string };
-
-
-// export const addFavoriteButton = ({ bookId, userId }:{bookId:string, userId:string}) => {
-//   const [ message, setMessage] = useState('');
-
-//   const handleAddFavorite = async () => {
-//     const result: AddFavoriteResult = await addFavorite(bookId, userId);
-//     if ('message' in result) {
-//       setMessage(result.message);
-//     } else {
-//       setMessage('Book added to favorites');
-//     }
-//   };
-
-//   return (
-//     <div>
-//       <button onClick={handleAddFavorite}>Add to Favorites</button>
-//       {message && <p>{message}</p>}
-//     </div>
-//   );
-// };
-
-
-// type DeleteFavoriteResult = 
-//   | { message: string };
-
-// export const FavoriteButton = ({ bookId, userId }: { bookId: string, userId: string }) => {
-//   const [isFavorite, setIsFavorite] = useState(false);
-//   const [message, setMessage] = useState('');
-
-//   useEffect(() => {
-//     // Cek status favorit saat komponen dimuat
-//     const checkFavoriteStatus = async () => {
-//       const existingFavorite = await prisma.favorite.findUnique({
-//         where: {
-//           userId_bookId: {
-//             userId,
-//             bookId,
-//           },
-//         },
-//       });
-//       setIsFavorite(!!existingFavorite);
-//     };
-
-//     checkFavoriteStatus();
-//   }, [bookId, userId]);
-
-//   const handleToggleFavorite = async () => {
-//     if (isFavorite) {
-//       const result: DeleteFavoriteResult = await deleteFavorite(bookId, userId);
-//       if ('message' in result) {
-//         setMessage(result.message);
-//         setIsFavorite(false);
-//       }
-//     } else {
-//       const result: AddFavoriteResult = await addFavorite(bookId, userId);
-//       if ('message' in result) {
-//         setMessage(result.message);
-//       } else {
-//         setMessage('Book added to favorites');
-//         setIsFavorite(true);
-//       }
-//     }
-//   };
-
-//   return (
-//     <div>
-//       <button onClick={handleToggleFavorite}>
-//         {isFavorite ? 'Remove from Favorites' : 'Add to Favorites'}
-//       </button>
-//       {message && <p>{message}</p>}
-//     </div>
-//   );
-// };
-
-
-
-
-
-
-// export const FavoriteButton = ({ bookId, userId }: { bookId: string, userId: string }) => {
-//   const [isFavorite, setIsFavorite] = useState(false);
-//   const [message, setMessage] = useState('');
-
-//   useEffect(() => {
-//     const checkFavoriteStatus = async () => {
-//       try {
-//         const response = await fetch(`/api/favorites/checkFavorite?userId=${userId}&bookId=${bookId}`);
-//         if (!response.ok) {
-//           throw new Error('Network response was not ok');
-//         }
-//         const data = await response.json();
-//         setIsFavorite(data.isFavorite);
-//       } catch (error) {
-//         console.error('Error checking favorite status:', error);
-//       }
-//     };
-
-//     checkFavoriteStatus();
-//   }, [bookId, userId]);
-
-//   const handleToggleFavorite = async () => {
-//     if (isFavorite) {
-//       const result: DeleteFavoriteResult = await deleteFavorite(bookId, userId);
-//       if ('message' in result) {
-//         setMessage(result.message);
-//         setIsFavorite(false);
-//       }
-//     } else {
-//       const result: AddFavoriteResult = await addFavorite(bookId, userId);
-//       if ('message' in result) {
-//         setMessage(result.message);
-//       } else {
-//         setMessage('Book added to favorites');
-//         setIsFavorite(true);
-//       }
-//     }
-//   };
-
-//   return (
-//     <div>
-//       <button onClick={handleToggleFavorite}>
-//         {isFavorite ? 'Hapus dari Favorit' : 'Tambahkan ke Favorit'}
-//       </button>
-//       {message && <p>{message}</p>}
-//     </div>
-//   );
-// };
-
-
 export const FavoriteButton = ({ bookId, userId }: { bookId: string, userId: string }) => {
   const [isFavorite, setIsFavorite] = useState(false);
-  const [message, setMessage] = useState('');
-  const [showModal, setShowModal] = useState(false);
+  const buttonRef = useRef<HTMLButtonElement | null>(null);
 
   useEffect(() => {
     const fetchFavoriteStatus = async () => {
@@ -255,26 +146,27 @@ export const FavoriteButton = ({ bookId, userId }: { bookId: string, userId: str
   const handleToggleFavorite = async () => {
     try {
       const result = await toggleFavorite(userId, bookId);
-      setMessage(result.message);
       setIsFavorite(result.isFavorite);
-      setShowModal(true);
     } catch (error) {
       console.error('Error toggling favorite:', error);
-      setMessage('Failed to update favorite status');
-      setShowModal(true);
     }
   };
 
-  const closeModal = () => {
-    setShowModal(false);
-  };
+  useEffect(() => {
+    const buttonElement = buttonRef.current;
+    if (buttonElement && buttonElement.parentNode) {
+      // Akses parentNode di sini jika diperlukan
+      console.log(buttonElement.parentNode);
+    }
+  }, [isFavorite]);
 
   return (
-    <div>
-      <button onClick={handleToggleFavorite}>
-        {isFavorite ? 'Hapus dari Favorit' : 'Tambahkan ke Favorit'}
-      </button>
-      {showModal && <Modal message={message} onClose={closeModal} />}
-    </div>
+    <button ref={buttonRef} onClick={handleToggleFavorite} className={styles.button}>
+      {isFavorite ? (
+        <CheckIcon className={`${styles.icon} ${styles.greenIcon}`} />
+      ) : (
+        <PlusIcon className={`${styles.icon} ${styles.blueIcon}`} />
+      )}
+    </button>
   );
 };

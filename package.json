@@ -12,6 +12,7 @@
   "dependencies": {
     "@auth/prisma-adapter": "^2.7.4",
     "@auth0/nextjs-auth0": "^4.0.0-beta.7",
+    "@heroicons/react": "^2.2.0",
     "@prisma/client": "^5.22.0",
     "@react-pdf-viewer/core": "3.12.0",
     "@react-pdf-viewer/default-layout": "^3.12.0",

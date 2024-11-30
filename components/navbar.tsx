@@ -1,13 +1,14 @@
 import Link from "next/link";
 import Image from "next/image";
 import { auth, signOut } from "@/auth";
+import NavbarClient from "@/components/navbarClient";
 
 const Navbar = async () => {
   const session = await auth();
 
   return (
     <nav className="bg-white p-4 flex justify-between items-center">
-      <div></div>
+      <NavbarClient />
       <div className="flex items-center gap-3">
         {session && (
           <div className="flex gap-3 items-center">

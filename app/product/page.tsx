@@ -9,7 +9,7 @@ const Dashboard = async () => {
 
   return (
     <div>
-      <div className="max-w-screen-lg mx-auto py-14">
+      <div className="max-w-screen-lg mx-auto py-5">
         <div className="flex items-end justify-between">
           <h1 className="text-4xl font-bold">Favorite Books</h1>
         </div>

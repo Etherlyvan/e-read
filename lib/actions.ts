@@ -226,6 +226,7 @@ export const updateBook= async (id: string,prevState: unknown, formData: FormDat
 };
 
 
+
 export const deleteBook = async (id: string) => {
   const data = await getBookById(id);
   if (!data) return { message: "No data found" };
@@ -239,14 +240,19 @@ export const deleteBook = async (id: string) => {
   }
 
   try {
+    // Menghapus entri favorit yang terkait dengan buku
+    await prisma.favorite.deleteMany({
+      where: { bookId: id },
+    });
+
+    // Menghapus buku
     await prisma.book.delete({
       where: { id },
     });
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (error) {
     return { message: "Failed to delete data" };
   }
-  
+
   revalidatePath("/");
   return { message: "Book deleted successfully" };
 };
