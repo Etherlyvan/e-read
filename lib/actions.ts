@@ -279,12 +279,6 @@ export async function toggleFavorite(userId: string, bookId: string) {
       return { message: 'Favorite removed', isFavorite: false };
     } else {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const newFavorite = await prisma.favorite.create({
-        data: {
-          userId,
-          bookId,
-        },
-      });
       return { message: 'Favorite added', isFavorite: true };
     }
   } catch (error) {

@@ -106,7 +106,7 @@ export const DeleteButton = ({ id }: DeleteButtonProps) => {
       setMessage(result.message);
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
-      setMessage('Failed to delete book');
+      setMessage('Failed ');
     } finally {
       setIsLoading(false);
     }
