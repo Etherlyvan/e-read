@@ -17,18 +17,16 @@ const hero = ({ userName }: { userName: string }) => {
         <div className="mt-8">
           <h2 className="text-2xl tracking-wide leading-relaxed mb-4">
             Jelajahi koleksi buku, jurnal, dan literatur dari seluruh dunia.
+            <br/>Akses mudah kapan saja, di mana saja.
+            <br/>Temukan pengetahuan tanpa batas di ujung jari Anda.
           </h2>
-          <h2 className="text-2xl tracking-wide leading-relaxed mb-4">
-            Akses mudah kapan saja, di mana saja.
-          </h2>
-          <h2 className="text-2xl tracking-wide leading-relaxed">
-            Temukan pengetahuan tanpa batas di ujung jari Anda.
-          </h2>
+
+
         </div>
       </div>
       
       {/* Bagian kanan: Gambar besar */}
-      <div className="flex-1 flex justify-center items-center">
+      <div className=" flex justify-center items-center">
         <Image
             src="/hero_image.svg"
             alt="Gambar Perpustakaan"

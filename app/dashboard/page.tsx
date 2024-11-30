@@ -10,7 +10,7 @@ const Dashboard = async () => {
   return (
     <div>
 
-      <Hero userName={session?.user?.name ?? 'Pengguna'} />
+      <Hero userName='' />
       
       
       <div className="max-w-screen-lg mx-auto py-14">
