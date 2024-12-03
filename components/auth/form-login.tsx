@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+
 import { signInCredentials } from "@/lib/actions";
 import { LoginButton } from "@/components/button";
 import { useActionState } from 'react';
@@ -55,10 +55,7 @@ const FormLogin = () => {
     
       {/* Already have an account */}
       <div className="text-sm font-medium text-gray-500">
-        Doesn&apos;t have an account yet?{' '}
-        <Link href="/register" className="text-blue-600 hover:underline">
-          Sign up here!
-        </Link>
+   
       </div>
     </form>
   );
