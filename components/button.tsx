@@ -3,11 +3,12 @@
 import { useFormStatus } from "react-dom";
 import { clsx } from "clsx";
 import Link from "next/link";
-import { checkFavoriteStatus, deleteBook, toggleFavorite } from "@/lib/actions";
+import { checkFavoriteStatus,  deleteAccount,  deleteBook, toggleFavorite } from "@/lib/actions";
 import React, { useEffect, useState, useRef } from 'react';
 
 import styles from './FavoriteButton.module.css'; // Impor CSS Module
 import { PlusIcon, CheckIcon, TrashIcon } from '@heroicons/react/24/outline';
+
 
 
 
@@ -169,5 +170,54 @@ export const FavoriteButton = ({ bookId, userId }: { bookId: string, userId: str
         <PlusIcon className={`${styles.icon} ${styles.blueIcon}`} />
       )}
     </button>
+  );
+};
+
+
+interface DeleteAccountButtonProps {
+  userId: string;
+}
+
+export const DeleteAccountButton: React.FC<DeleteAccountButtonProps> = ({ userId }) => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [message, setMessage] = useState('');
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true); // Menandakan bahwa komponen ini dijalankan di sisi klien
+  }, []);
+
+  const handleDeleteAccount = async () => {
+    const confirmDelete = confirm("Are you sure you want to delete your account? This action cannot be undone.");
+    if (!confirmDelete) return;
+
+    setIsLoading(true);
+    setMessage('');
+
+    try {
+      await deleteAccount(userId); // Panggil fungsi untuk menghapus pengguna dari database
+      setMessage('Account deleted successfully.');
+      if (isClient) {
+    ; // Navigasi ke halaman lain setelah penghapusan berhasil
+      }
+    } catch (error) {
+      setMessage('Failed to delete account. Please try again.');
+      console.error("Failed to delete user:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return (
+    <div>
+      <button
+        onClick={handleDeleteAccount}
+        disabled={isLoading}
+        className={`text-red-500 hover:text-red-700 ${isLoading ? 'cursor-not-allowed' : ''}`}
+      >
+        {isLoading ? 'Deleting...' : 'Delete Account'}
+      </button>
+      {message && <p>{message}</p>}
+    </div>
   );
 };

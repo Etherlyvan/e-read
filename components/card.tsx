@@ -11,7 +11,7 @@ const Card = async ({ data }: { data: Book }) => {
   const session = await auth();
   return (
     <div className="max-w-xs border border-gray-200 rounded-md shadow cursor-pointer block transition-transform duration-300 hover:scale-105">
-      <Link href={`/books/${data.id}`}>
+      <Link href={`/bookDetail/${data.id}`}>
         <div className="relative aspect-[3/4]">
           <Image
             src={data.image}
@@ -26,12 +26,12 @@ const Card = async ({ data }: { data: Book }) => {
       <CardClient title={data.title} genre={data.genre} />
       <div className="flex items-center justify-between p-3">
         <FavoriteButton bookId={data.id} userId={session?.user?.id ?? ""} />
-      {session && session.user.role === 'admin' && (
-        <div className="flex items-center space-x-2">
-          <EditButton id={data.id} />
-          <DeleteButton id={data.id} />
-        </div>
-      )}
+        {session && session.user.role === 'admin' && (
+          <div className="flex items-center space-x-2">
+            <EditButton id={data.id} />
+            <DeleteButton id={data.id} />
+          </div>
+        )}
       </div>
     </div>
   );

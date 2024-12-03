@@ -69,10 +69,13 @@ model Book {
   pdf         String
   title       String
   genre       String
+  description String?     // Ubah menjadi nullable
   createdAt   DateTime    @default(now())
   favorites   Favorite[]
   @@map("books")
 }
+
+
 model Favorite {
   id          String      @id @default(cuid())
   userId      String

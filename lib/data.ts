@@ -14,19 +14,33 @@ export const getBooks = async () => {
   }
 };
 
+// Fungsi untuk menghapus pengguna berdasarkan ID
+export const deleteUser = async (userId: string) => {
+  try {
+    const result = await prisma.user.delete({
+      where: { id: userId },
+    });
+    return result;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  } catch (error) {
+    throw new Error("Failed to delete user");
+  }
+};
+
 export const getUsers = async () => {
-    const session = await auth();
-    if (session?.user?.role !== "admin") {
-      redirect("/dashboard");
-      return; 
-    }
-  
-    try {
-      const users = await prisma.user.findMany();
-      return users;
-    } catch (error) {
-      console.log(error);
-    }
+  const session = await auth();
+  if (session?.user?.role !== 'admin') {
+    redirect('/dashboard');
+    return;
+  }
+
+  try {
+    const users = await prisma.user.findMany();
+    console.log('Fetched users:', users); // Tambahkan logging di sini
+    return users;
+  } catch (error) {
+    console.error('Failed to fetch users:', error);
+  }
 };
   
 export const getProductByUser = async () => {

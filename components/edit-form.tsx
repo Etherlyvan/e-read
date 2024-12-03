@@ -36,6 +36,18 @@ const EditForm = ({data}:{data:Book}) => {
             <p className="text-sm text-red-500 mt-2">{state?.error?.genre}</p>
         </div>
       </div>
+            {/* Description */}
+            <div className="mb-4 pt-2">
+        <textarea
+          name="description"
+          className="py-2 px-4 rounded-sm border border-gray-400 w-full"
+          placeholder="Description..."
+          defaultValue={data.description??""}
+        />
+        <div aria-live="polite" aria-atomic="true">
+        </div>
+      </div>
+
 
       {/* Upload Image */}
       <div className="mb-4 pt-2">

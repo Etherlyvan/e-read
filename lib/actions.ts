@@ -145,6 +145,7 @@ export const uploadBook= async (prevState: unknown, formData: FormData) => {
 const EditSchema = z.object({
   title: z.string().min(1),
   genre: z.string().min(1),
+  description: z.string(),
   image: z
     .instanceof(File)
     .refine((file) => file.size===0 || file.type.startsWith("image/"), {
@@ -166,7 +167,7 @@ const EditSchema = z.object({
 });
 
 
-export const updateBook= async (id: string,prevState: unknown, formData: FormData) => {
+export const updateBook = async (id: string, prevState: unknown, formData: FormData) => {
   const validatedFields = EditSchema.safeParse(
     Object.fromEntries(formData.entries())
   );
@@ -176,22 +177,23 @@ export const updateBook= async (id: string,prevState: unknown, formData: FormDat
       error: validatedFields.error.flatten().fieldErrors,
     };
   }
+
   const data = await getBookById(id);
   if (!data) return { message: "No Data Found" };
 
-  const { title, genre, image,PDF } = validatedFields.data;
+  const { title, genre, description, image, PDF } = validatedFields.data;
   let imagePath;
   if (!image || image.size <= 0) {
     imagePath = data.image;
   } else {
     await del(data.image);
-    // Pastikan fungsi `put` mengembalikan objek dengan properti `url`
     const { url: urlImage } = await put(image.name, image, {
       access: "public",
       multipart: true,
     });
     imagePath = urlImage;
   }
+
   let PDFPath;
   if (!PDF || PDF.size <= 0) {
     PDFPath = data.pdf;
@@ -201,17 +203,16 @@ export const updateBook= async (id: string,prevState: unknown, formData: FormDat
       access: "public",
       multipart: true,
     });
-  
     PDFPath = urlPDF;
   }
-
 
   try {
     await prisma.book.update({
       data: {
         title,
-        image: imagePath,
         genre,
+        description, // Pastikan deskripsi diperbarui
+        image: imagePath,
         pdf: PDFPath,
       },
       where: { id },
@@ -220,11 +221,10 @@ export const updateBook= async (id: string,prevState: unknown, formData: FormDat
   } catch (error) {
     return { message: "Failed to update data" };
   }
-  
+
   revalidatePath("/dashboard");
   redirect("/dashboard");
 };
-
 
 
 export const deleteBook = async (id: string) => {
@@ -303,3 +303,26 @@ export async function checkFavoriteStatus(userId: string, bookId: string) {
     throw new Error('Failed to check favorite status');
   }
 }
+
+export const deleteAccount = async (userId: string) => {
+  try {
+    // Menghapus entri favorit yang terkait dengan pengguna
+    await prisma.favorite.deleteMany({
+      where: { userId },
+    });
+
+    // Menghapus pengguna
+    await prisma.user.delete({
+      where: { id: userId },
+    });
+
+    // Revalidate path dan redirect ke halaman utama setelah penghapusan akun
+    revalidatePath("/");
+    redirect("/");
+  } catch (error) {
+    console.error('Error deleting account:', error);
+    return { message: "Failed to delete account" };
+  }
+
+  return { message: "Account deleted successfully" };
+};
