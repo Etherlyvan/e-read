@@ -154,14 +154,6 @@ export const FavoriteButton = ({ bookId, userId }: { bookId: string, userId: str
     }
   };
 
-  useEffect(() => {
-    const buttonElement = buttonRef.current;
-    if (buttonElement && buttonElement.parentNode) {
-      // Akses parentNode di sini jika diperlukan
-      console.log(buttonElement.parentNode);
-    }
-  }, [isFavorite]);
-
   return (
     <button ref={buttonRef} onClick={handleToggleFavorite} className={styles.button}>
       {isFavorite ? (
@@ -172,7 +164,6 @@ export const FavoriteButton = ({ bookId, userId }: { bookId: string, userId: str
     </button>
   );
 };
-
 
 interface DeleteAccountButtonProps {
   userId: string;
