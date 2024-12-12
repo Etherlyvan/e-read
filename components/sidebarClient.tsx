@@ -38,7 +38,7 @@ const SidebarClient: React.FC<SidebarClientProps> = ({ session }) => {
             
           )}
           {session.user.role === 'admin' && (
-            <li className={`p-2 ${isActive('/user') ? 'text-blue-500' : ''}`}>
+            <li className={`p-2 ${isActive('/bookList') ? 'text-blue-500' : ''}`}>
               <Link href="/bookList">Book List</Link>
             </li>
             

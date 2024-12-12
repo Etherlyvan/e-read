@@ -3,7 +3,7 @@
 import { useFormStatus } from "react-dom";
 import { clsx } from "clsx";
 import Link from "next/link";
-import { checkFavoriteStatus,  deleteAccount,  deleteBook, toggleFavorite } from "@/lib/actions";
+import { addOrUpdateHistory, checkFavoriteStatus,  deleteAccount,  deleteBook, toggleFavorite } from "@/lib/actions";
 import React, { useEffect, useState, useRef } from 'react';
 
 import styles from './FavoriteButton.module.css'; // Impor CSS Module
@@ -171,6 +171,7 @@ interface DeleteAccountButtonProps {
 
 export const DeleteAccountButton: React.FC<DeleteAccountButtonProps> = ({ userId }) => {
   const [isLoading, setIsLoading] = useState(false);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [message, setMessage] = useState('');
   const [isClient, setIsClient] = useState(false);
 
@@ -189,7 +190,7 @@ export const DeleteAccountButton: React.FC<DeleteAccountButtonProps> = ({ userId
       await deleteAccount(userId); // Panggil fungsi untuk menghapus pengguna dari database
       setMessage('Account deleted successfully.');
       if (isClient) {
-    ; // Navigasi ke halaman lain setelah penghapusan berhasil
+        // Navigasi ke halaman lain setelah penghapusan berhasil
       }
     } catch (error) {
       setMessage('Failed to delete account. Please try again.');
@@ -200,15 +201,45 @@ export const DeleteAccountButton: React.FC<DeleteAccountButtonProps> = ({ userId
   };
 
   return (
-    <div>
-      <button
-        onClick={handleDeleteAccount}
-        disabled={isLoading}
-        className={`text-red-500 hover:text-red-700 ${isLoading ? 'cursor-not-allowed' : ''}`}
-      >
-        {isLoading ? 'Deleting...' : 'Delete Account'}
-      </button>
-      {message && <p>{message}</p>}
-    </div>
+    <button
+      onClick={handleDeleteAccount}
+      className={`px-4 py-2 bg-red-600 text-white font-semibold rounded-lg hover:bg-red-700 ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
+      disabled={isLoading}
+    >
+      {isLoading ? 'Deleting...' : 'Delete Account'}
+    </button>
   );
 };
+type ReadPDFButtonProps = {
+  bookId: string;
+  userId: string;
+};
+
+export const ReadPDFButton: React.FC<ReadPDFButtonProps> = ({ bookId, userId }) => {
+  const handleReadPDF = async () => {
+    if (userId) {
+      try {
+        // Memanggil fungsi untuk menambah atau memperbarui riwayat
+        await addOrUpdateHistory(userId, bookId);
+        
+
+        // Setelah menyimpan riwayat, navigasi ke halaman buku
+        window.location.href = `/books/${bookId}`;
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      } catch (error) {
+        
+        // Tambahkan logika penanganan kesalahan jika diperlukan
+      }
+    }
+  };
+
+  return (
+    <button
+      onClick={handleReadPDF}
+      className="bg-blue-500 text-white px-4 py-2 rounded-md"
+    >
+      Read PDF
+    </button>
+  );
+};
+

@@ -21,23 +21,20 @@ export const signInCredentials = async (prevState: unknown, formData: FormData) 
     };
   }
 
-  const {  email, password } = validatedFields.data
- 
+  const { email, password } = validatedFields.data;
+
   try {
     await signIn("credentials", { email, password, redirectTo: "/dashboard" });
   } catch (error) {
     if (error instanceof AuthError) {
-      switch (error.type) {
-        case "CredentialsSignin":
-          return { message: "Invalid Credentials" };
-        default:
-          return { message: "Something went wrong." };
+      if (error.type === "CredentialsSignin") {
+        return { message: "Invalid Credentials" };
+      } else {
+        return { message: "Something went wrong." };
       }
     }
     throw error;
   }
-  
-  
 };
 
 export const signUpCredentials = async (prevState: unknown, formData: FormData) => {
@@ -332,3 +329,39 @@ export const deleteAccount = async (userId: string) => {
 
   return { message: "Account deleted successfully" };
 };
+
+
+export async function addOrUpdateHistory(userId: string, bookId: string) {
+  try {
+    console.log(`Attempting to update history for user ${userId} with book ${bookId}`);
+    const existingHistory = await prisma.history.findUnique({
+      where: {
+        userId_bookId: {
+          userId,
+          bookId,
+        },
+      },
+    });
+
+    if (existingHistory) {
+      await prisma.history.update({
+        where: {
+          id: existingHistory.id,
+        },
+        data: {
+          openedAt: new Date(),
+        },
+      });
+    } else {
+      await prisma.history.create({
+        data: {
+          userId,
+          bookId,
+        },
+      });
+    }
+  } catch (error) {
+    console.error('Error updating history:', error);
+    throw new Error('Failed to update history');
+  }
+}

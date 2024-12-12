@@ -97,3 +97,16 @@ export const getFavoriteBooks = async (userId: string) => {
   });
   return favoriteBooks.map(fav => fav.book);
 };
+
+
+export async function getUserHistory(userId: string) {
+  return await prisma.history.findMany({
+    where: {
+      userId,
+    },
+    orderBy: {
+      openedAt: 'desc',
+    },
+  });
+}
+

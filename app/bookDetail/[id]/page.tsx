@@ -1,15 +1,17 @@
+import React from 'react';
 import { getBookById } from '@/lib/data';
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
-import { FavoriteButton } from '@/components/button';
+import { FavoriteButton, ReadPDFButton } from '@/components/button';
 import { auth } from '@/auth';
-import Link from 'next/link';
 
-type Params = Promise < {
-    id: string;
+
+type Params = Promise<{
+  id: string;
 }>;
 
-const BookDetailPage = async ({ params }:{params:Params} ) => {
+
+const BookDetailPage = async ({ params }: { params: Params }) => {
   const { id } = await params;
   const data = await getBookById(id);
   if (!data) return notFound();
@@ -36,13 +38,7 @@ const BookDetailPage = async ({ params }:{params:Params} ) => {
             {data.description && <p className="text-gray-700 mb-4"><strong>Description:</strong> {data.description}</p>}
             <div className="flex items-center space-x-4">
               <FavoriteButton bookId={data.id} userId={session?.user?.id ?? ""} />
-
-              <Link href={`/books/${data.id}`} className="bg-blue-500 text-white px-4 py-2 rounded-md">
-              Read PDF
-              
-              </Link>
-
-
+              <ReadPDFButton bookId={data.id} userId={session?.user?.id ?? ""} />
             </div>
           </div>
         </div>
